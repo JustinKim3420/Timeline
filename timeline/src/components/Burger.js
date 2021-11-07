@@ -12,7 +12,7 @@ const Burger = () => {
     }
 
   return (
-    <button id="burger" onClick={()=>{handleClick()}}>
+    <button className="burger" onClick={()=>{handleClick()}}>
       <div className={"burger-line" + (isBurgerClicked? " rotated":'')}></div>
       <div className={"burger-line" + (isBurgerClicked? " rotated":'')}></div>
       <div className={"burger-line" + (isBurgerClicked? " rotated":'')}></div>

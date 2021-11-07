@@ -2,25 +2,19 @@ import Navbar from "./components/Navbar";
 import Homepage from "./components/Homepage";
 import Chesspage from "./components/Chesspage";
 import Githubpage from "./components/Githubpage";
-import { Route, Switch } from "react-router-dom";
-import Overlay from './components/Overlay'
+import { Route, Routes } from "react-router-dom";
+import Overlay from "./components/Overlay";
 
 const App = () => {
   return (
     <div className="full-page">
       <Overlay />
       <Navbar />
-      <Switch>
-        <Route path="/Chess">
-          <Chesspage />
-        </Route>
-        <Route path="/Github">
-          <Githubpage />
-        </Route>
-        <Route path="/">
-          <Homepage />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route path="/Chess" element={<Chesspage />} />
+        <Route path="/Github" element={<Githubpage />} />
+        <Route path="/" element = {<Homepage />}/>
+      </Routes>
     </div>
   );
 };

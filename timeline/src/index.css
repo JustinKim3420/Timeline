@@ -63,7 +63,7 @@ body.dark-theme {
 }
 .nav-link:hover {
   background-color: var(--main-light);
-  transition: background-color 0.2s;
+  transition: background-color 0.4s;
 }
 
 .timeline-nav-items {
@@ -96,7 +96,7 @@ body.dark-theme {
   font-size: inherit;
   box-sizing: content-box;
   margin-bottom: 3rem;
-  padding: 0.1rem 0.75rem;
+  padding: 0.1rem 0.25rem 0.1rem 0.5rem;
 }
 .search-input {
   border: 0.1rem solid var(--main-dark);
@@ -126,15 +126,15 @@ body.dark-theme {
   margin: 2rem 0 1rem 0;
 }
 
-#burger {
+.burger {
   display: none;
   caret-color: transparent;
-  background:none;
+  background: none;
   color: inherit;
   cursor: pointer;
   overflow: hidden;
   padding: 0.25rem;
-  border:none;
+  border: none;
 }
 
 .burger-line {
@@ -142,43 +142,81 @@ body.dark-theme {
   width: 2rem;
   border-radius: 0.25rem;
   background-color: var(--main-dark);
-  transition: transform 0.2s;
+  transition: transform 0.4s;
 }
 .burger-line:nth-child(2) {
   margin: 0.5rem 0;
 }
-.rotated:nth-child(1) {
-  transform: translate(0,0.75rem) rotate(45deg);
-
+.rotated:first-child {
+  transform: translate(0, 0.75rem) rotate(45deg);
 }
 .rotated:nth-child(2) {
   transform: translate(-150%, 0);
 }
-.rotated:nth-child(3) {
-  transform: translate(0,-0.75rem) rotate(-45deg);
+.rotated:last-child {
+  transform: translate(0, -0.75rem) rotate(-45deg);
 }
 
-#overlay{
+.x {
+  position: relative;
+  left: -100%;
+  height: 2.5rem;
+  caret-color: transparent;
+  background: none;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0.25rem;
+  border: none;
+  vertical-align: top;
+  pointer-events: none;
+  transition: left 0.4s;
+}
+.x.clicked {
+  left:0;
+  pointer-events: auto;
+  transition: left 0.4s;
+}
+.x-line {
+  height: 0.25rem;
+  width: 2rem;
+  border-radius: 0.25rem;
+  background-color: white;
+  transition: transform 0.4s;
+}
+.x-line:first-child {
+  margin-bottom: 0.75rem;
+  transform: translate(0, 0.5rem) rotate(45deg);
+}
+.x-line:last-child {
+  margin-top: 0.75rem;
+  transform: translate(0, -0.5rem) rotate(-45deg);
+}
+
+#overlay {
   position: fixed;
   z-index: 10;
-  height:100%;
-  width:100%;
-  color:var(--main-light);
-  background-color: rgba(0, 0, 0, 0.0);
+  height: 100%;
+  width: 100%;
+  color: var(--main-light);
+  background-color: rgba(0, 0, 0, 0);
   pointer-events: none;
-  transition:  background-color 0.2s;
+  transition: background-color 0.4s;
 }
-#overlay-nav{
-  margin:0;
-  padding: 0;
+#overlay-nav {
+  display: inline-block;
+  position: relative;
+  left: -100%;
   width: 40%;
+  margin: 0;
+  padding: 0;
   min-width: 10rem;
   height: 100%;
   background-color: var(--secondary-dark);
   overflow: hidden;
   list-style: none;
+  transition: left 0.4s;
 }
-.overlay-nav-link{
+.overlay-nav-link {
   width: inherit;
   height: inherit;
   text-decoration: none;
@@ -186,20 +224,23 @@ body.dark-theme {
   padding: 0.5rem;
   font-size: 2rem;
   color: var(--main-light);
-  transition: color 0.2s, background-color 0.2s;
+  transition: color 0.4s, background-color 0.4s;
 }
-.overlay-nav-link:hover{
-  color:var(--main-dark);
+.overlay-nav-link:hover {
+  color: var(--main-dark);
   background-color: var(--secondary-light);
-  transition: color 0.2s, background-color 0.2s;
+  transition: color 0.4s, background-color 0.4s;
 }
 
-#overlay.clicked{
+#overlay.clicked {
   pointer-events: auto;
   background-color: rgba(0, 0, 0, 0.7);
-  transition:  background-color 0.2s;
+  transition: background-color 0.4s;
 }
-
+#overlay-nav.clicked {
+  left: 0;
+  transition: left 0.4s;
+}
 
 @media only screen and (max-width: 50rem) {
   .navbar {
@@ -210,7 +251,7 @@ body.dark-theme {
     display: none;
   }
 
-  #burger {
+  .burger {
     display: block;
   }
 }
