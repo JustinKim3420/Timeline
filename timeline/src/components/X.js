@@ -9,6 +9,9 @@ const X = () => {
 
   const handleXClick = () => {
     dispatch(burgerClick());
+    isBurgerClicked
+      ? document.body.classList.remove("overlay")
+      : document.body.classList.add("overlay");
   };
 
   return (

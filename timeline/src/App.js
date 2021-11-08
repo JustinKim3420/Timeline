@@ -2,6 +2,7 @@ import Navbar from "./components/Navbar";
 import Homepage from "./components/Homepage";
 import Chesspage from "./components/Chesspage";
 import Githubpage from "./components/Githubpage";
+import Apexpage from "./components/Apexpage";
 import { Route, Routes } from "react-router-dom";
 import Overlay from "./components/Overlay";
 
@@ -13,7 +14,8 @@ const App = () => {
       <Routes>
         <Route path="/Chess" element={<Chesspage />} />
         <Route path="/Github" element={<Githubpage />} />
-        <Route path="/" element = {<Homepage />}/>
+        <Route path="/Apex" element={<Apexpage />} />
+        <Route path="/" element={<Homepage />} />
       </Routes>
     </div>
   );

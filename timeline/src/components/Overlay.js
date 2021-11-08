@@ -7,40 +7,63 @@ import { burgerClick } from "../slices/burgerSlice";
 
 const Overlay = () => {
   const dispatch = useDispatch();
-  const burgerIsClicked = useSelector((state) => state.burger.value);
+  const isBurgerClicked = useSelector((state) => state.burger.value);
 
   const handleOverlayClick = (event) => {
     if (event.target.id === "overlay") {
       dispatch(burgerClick());
+      isBurgerClicked
+        ? document.body.classList.remove("overlay")
+        : document.body.classList.add("overlay");
     }
   };
 
-  const handleNavClick=()=>{
-    dispatch(burgerClick())
-  }
+  const handleNavClick = () => {
+    dispatch(burgerClick());
+    isBurgerClicked
+      ? document.body.classList.remove("overlay")
+      : document.body.classList.add("overlay");
+  };
 
   return (
     <div
       id="overlay"
-      className={burgerIsClicked ? "clicked" : null}
+      className={isBurgerClicked ? "clicked" : null}
       onClick={(event) => {
         handleOverlayClick(event);
       }}
     >
-      <ul id="overlay-nav" className={burgerIsClicked ? "clicked" : null}>
+      <ul id="overlay-nav" className={isBurgerClicked ? "clicked" : null}>
         <li className="overlay-nav-item" onClick={handleNavClick}>
           <Link to="/" className="overlay-nav-link">
             Home
           </Link>
         </li>
         <li className="overlay-nav-item">
-          <Link to="/Chess" className="overlay-nav-link" onClick={handleNavClick}>
+          <Link
+            to="/Chess"
+            className="overlay-nav-link"
+            onClick={handleNavClick}
+          >
             Chess
           </Link>
         </li>
         <li className="overlay-nav-item">
-          <Link to="/Github" className="overlay-nav-link" onClick={handleNavClick}>
+          <Link
+            to="/Github"
+            className="overlay-nav-link"
+            onClick={handleNavClick}
+          >
             Github
+          </Link>
+        </li>
+        <li className="overlay-nav-item">
+          <Link
+            to="/Apex"
+            className="overlay-nav-link"
+            onClick={handleNavClick}
+          >
+            Apex Legends
           </Link>
         </li>
       </ul>
