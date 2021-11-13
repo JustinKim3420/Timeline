@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Apexpage = () => {
   const handleSubmit = (event) => {
@@ -14,9 +15,11 @@ const Apexpage = () => {
           type="text"
           placeholder="Search for a user..."
         />
-        <button className="search-button" type="submit">
-          Search
-        </button>
+        <Link to="/results/:searchedUsername">
+          <button className="search-button" type="submit">
+            Search
+          </button>
+        </Link>
       </form>
     </div>
   );

@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <div>
       <div className="navbar">
-        <Link to="/" className="no-text-decoration inline-block">
+        <Link to="/" className="no-text-decoration inline-block home-icon-link">
           <i className="fas fa-chart-line navbar-icon"></i>
         </Link>
         <div>
@@ -34,6 +34,14 @@ const Navbar = () => {
             </Link>
           </li>
         </ul>
+        {
+            <Link
+              to="/"
+              className="no-text-decoration inline-block margin-left-auto display-none-at-size profile-icon-link"
+            >
+              <i className="far fa-user-circle profile-icon"></i>
+            </Link>
+        }
       </div>
     </div>
   );

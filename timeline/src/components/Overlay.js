@@ -66,6 +66,15 @@ const Overlay = () => {
             Apex Legends
           </Link>
         </li>
+        {<li className="overlay-nav-item">
+          <Link
+            to="/"
+            className="overlay-nav-link"
+            onClick={handleNavClick}
+          >
+            Login
+          </Link>
+        </li>}
       </ul>
 
       <X />

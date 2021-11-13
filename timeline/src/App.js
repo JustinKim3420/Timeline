@@ -3,6 +3,7 @@ import Homepage from "./components/Homepage";
 import Chesspage from "./components/Chesspage";
 import Githubpage from "./components/Githubpage";
 import Apexpage from "./components/Apexpage";
+import Resultspage from "./components/Resultspage";
 import { Route, Routes } from "react-router-dom";
 import Overlay from "./components/Overlay";
 
@@ -12,6 +13,7 @@ const App = () => {
       <Overlay />
       <Navbar />
       <Routes>
+        <Route path="/results/:searchedUsername" element={<Resultspage/>}/>
         <Route path="/Chess" element={<Chesspage />} />
         <Route path="/Github" element={<Githubpage />} />
         <Route path="/Apex" element={<Apexpage />} />

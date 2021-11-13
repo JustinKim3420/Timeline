@@ -19,13 +19,15 @@ body {
   color: var(--main-dark);
   font-family: Arial, Helvetica, sans-serif;
 }
-body.overlay{
+body.overlay {
   overflow: hidden;
 }
-
 body.dark-theme {
   background-color: gray;
   color: white;
+}
+.margin-left-auto {
+  margin-left: auto;
 }
 
 .navbar {
@@ -38,6 +40,17 @@ body.dark-theme {
   padding: 0 2rem;
 }
 
+.home-icon-link,
+.profile-icon-link {
+  border-radius: 1rem;
+}
+.home-icon-link {
+  margin: 0.25rem 0.25rem 0.25rem 0;
+}
+.profile-icon-link{
+  margin: 0.25rem 0 0.25rem auto;
+}
+
 .navbar-icon {
   display: inline-block;
   caret-color: transparent;
@@ -45,10 +58,23 @@ body.dark-theme {
   font-size: 3rem;
   padding: 0.25rem 0.5rem;
   border-radius: 1rem;
-  margin: 0.25rem 0.25rem 0.25rem 0;
   border: 0.1rem solid var(--main-dark);
+  transition: background-color 0.4s;
 }
-
+.profile-icon {
+  display: inline-block;
+  caret-color: transparent;
+  color: var(--main-dark);
+  font-size: 3rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  transition: background-color 0.4s;
+}
+.navbar-icon:hover,
+.profile-icon:hover {
+  background-color: var(--main-light);
+  transition: background-color 0.4s;
+}
 .nav-item {
   display: inline-block;
 }
@@ -63,6 +89,7 @@ body.dark-theme {
   margin: 0.25rem;
   font-weight: 500;
   font-size: 2rem;
+  transition: background-color 0.4s;
 }
 .nav-link:hover {
   background-color: var(--main-light);
@@ -128,7 +155,9 @@ body.dark-theme {
   font-size: 5rem;
   margin: 2rem 0 1rem 0;
 }
-
+.float-right {
+  float: right;
+}
 .burger {
   display: none;
   caret-color: transparent;
@@ -175,7 +204,7 @@ body.dark-theme {
   transition: left 0.4s;
 }
 .x.clicked {
-  left:0;
+  left: 0;
   pointer-events: auto;
   transition: left 0.4s;
 }
@@ -245,7 +274,7 @@ body.dark-theme {
   transition: left 0.4s;
 }
 
-@media only screen and (max-width: 50rem) {
+@media only screen and (max-width: 60rem) {
   .navbar {
     justify-content: space-between;
   }
@@ -256,5 +285,8 @@ body.dark-theme {
 
   .burger {
     display: block;
+  }
+  .display-none-at-size {
+    display: none;
   }
 }
