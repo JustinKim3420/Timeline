@@ -1,24 +1,14 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Chesspage = () => {
   const [searchedUsername, setSearchedUsername] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("handleSubmit");
-    navigate(`/results/${searchedUsername}`)
-    try {
-      console.log("handleSubmit, before axios get");
-      const usernameResults = await axios.get(
-        `https://api.chess.com/pub/player/${searchedUsername}`
-      );
-      console.log(usernameResults);
-    } catch (error) {
-      console.log(error);
-    }
+    navigate(`/chess/results/${searchedUsername}`);
   };
 
   return (

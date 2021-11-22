@@ -13,8 +13,8 @@ const App = () => {
       <Overlay />
       <Navbar />
       <Routes>
-        <Route path="/results/:searchedUsername" element={<Resultspage/>}/>
         <Route path="/Chess" element={<Chesspage />} />
+        <Route path="/Chess/results/:searchedUsername" element={<Resultspage/>}/>
         <Route path="/Github" element={<Githubpage />} />
         <Route path="/Apex" element={<Apexpage />} />
         <Route path="/" element={<Homepage />} />
