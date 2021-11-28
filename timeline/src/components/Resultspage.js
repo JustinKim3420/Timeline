@@ -20,40 +20,57 @@ const initialState = {
 const Resultspage = () => {
   const { searchedUsername } = useParams();
   const [usernameInfo, setUsernameInfo] = useState({ ...initialState });
+  const [userArchivedMatchesLinks, setUserArchivedMatchesLinks] = useState({
+    isLoading: true,
+    archivedMatches: [],
+  });
+  console.log(userArchivedMatchesLinks)
 
   useEffect(() => {
-    const searchForUsername = async () => {
+    const getUserInfo = async () => {
       let usernameResults;
-      let userMatches;
-      let userMatchArchiveTimes;
       try {
         usernameResults = await axios.get(
           `https://api.chess.com/pub/player/${searchedUsername}`
         );
-        userMatchArchiveTimes = await axios.get(
-          `https://api.chess.com/pub/player/${searchedUsername}/games/archives`
-        );
+        usernameResults = {
+          isLoading: false,
+          status: usernameResults.status,
+          userData: {
+            joined: usernameResults.data.joined,
+            username: usernameResults.data.username,
+            name: usernameResults.data.name,
+            player_id: usernameResults.data.player_id,
+          },
+        };
       } catch (error) {
         console.log(error.response.status);
-        setUsernameInfo({
+        usernameResults = {
           ...initialState,
           isLoading: false,
-          status: error.response.status,
-        });
-        return;
+          status: error.response.status||null,
+        };
       }
-      setUsernameInfo({
-        isLoading: false,
-        status: usernameResults.status,
-        userData: {
-          joined: usernameResults.data.joined,
-          username: usernameResults.data.username,
-          name: usernameResults.data.name,
-          player_id: usernameResults.data.player_id,
-        },
-      });
+      setUsernameInfo(usernameResults);
     };
-    searchForUsername();
+    const getArchivedMatches = async () => {
+      let availableArchives;
+      try {
+        availableArchives = (
+          await axios.get(
+            `https://api.chess.com/pub/player/${searchedUsername}/games/archives`
+          )
+        ).data.archives;
+      } catch (error) {
+        console.log(error);
+        availableArchives = [];
+      }
+      setUserArchivedMatchesLinks({
+        isLoading:false,
+        archivedMatches:availableArchives});
+    };
+    getUserInfo();
+    getArchivedMatches();
   }, [searchedUsername]);
 
   const loadingScreen = (
@@ -61,8 +78,7 @@ const Resultspage = () => {
       <Loading />
     </div>
   );
-
-  return usernameInfo.isLoading ? (
+  return (usernameInfo.isLoading || userArchivedMatchesLinks.isLoading) ? (
     loadingScreen
   ) : usernameInfo.userData.player_id ? (
     <div className="results-page">
@@ -73,7 +89,10 @@ const Resultspage = () => {
           Player ID: {usernameInfo.userData.player_id}
         </h3>
       </div>
-      <Timeline />
+      <Timeline
+        userArchivedMatchesLinks={userArchivedMatchesLinks.archivedMatches}
+        usernameInfo={usernameInfo}
+      />
     </div>
   ) : (
     <Error error={usernameInfo.status} />

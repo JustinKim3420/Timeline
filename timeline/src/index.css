@@ -263,6 +263,7 @@ body.dark-theme {
   border: 0.1rem solid var(--main-dark);
   border-radius: 1rem 0 0 1rem;
   min-width: 0;
+  caret-color: black;
   flex: 1 1 auto;
 }
 .search-button {
@@ -273,6 +274,7 @@ body.dark-theme {
 .search-form {
   display: flex;
   width: 50%;
+  caret-color: transparent;
   font-size: 2rem;
 }
 

@@ -1,9 +1,146 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const Timeline = ()=>{
-    return(<div className='timeline'>
+const RESULT_CODES = {
+  win: "win",
+  checkmated: "loss",
+  agreed: "draw",
+  repitition: "draw",
+  timeout: "loss",
+  resigned: "loss",
+  stalemate: "draw",
+  lose: "loss",
+  insufficient: "draw",
+  "50move": "draw",
+  abandoned: "loss",
+  kingofthehill: "loss",
+  threecheck: "loss",
+  timevsinsufficient: "draw",
+  bughousepartnerlose: "loss",
+};
 
-    </div>)
-}
+const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
+  const [numberOfMatches, updateNumberOfMatches] = useState(0);
+  const [allMatchData, updateMatchData] = useState({
+    isLoading: true,
+    matches: [],
+  });
+  const [indexOfCurrentMatch, setIndexOfCurrentMatch] =
+    useState();
+  const [indexOfCurrentArchive, setIndexOfCurrentArchive] = useState();
 
-export default Timeline
+  useEffect(() => {
+    const initialMatchesLimit = 50;
+
+    const analyzeMatch = (match) => {
+      let matchData;
+      if (
+        match.black.username.toLowerCase() ===
+        usernameInfo.userData.username.toLowerCase()
+      ) {
+        matchData = {
+          ratingAtStart: match.black.rating,
+          result: RESULT_CODES[match.black.result] || 'loss',
+          startTime: match.start_time,
+          endTime: match.end_time,
+          against: match.white.username,
+        };
+      } else {
+        matchData = {
+          ratingAtStart: match.white.rating,
+          result: RESULT_CODES[match.white.result] || 'loss',
+          endTime: match.end_time,
+          startTime: match.start_time,
+          against: match.black.username,
+        };
+      }
+      return matchData;
+    };
+
+    const getMatchHistoryInMonth = async (
+      archiveForMonth,
+      numberOfMatchesPlayed
+    ) => {
+      let matchesPlayedDuringMonth = [];
+      let analyzedMatches = [];
+      let numberOfMatchesPlayedThisMonth = 0;
+      try {
+        matchesPlayedDuringMonth = (await axios.get(archiveForMonth)).data
+          .games;
+      } catch (error) {
+        console.log("Error accessing the match archives", error);
+        return {
+          analyzedMatches: [],
+          numberOfMatchesPlayedThisMonth: 0,
+        };
+      }
+      for (let i = 0; i < matchesPlayedDuringMonth.length; i++) {
+        if (
+          numberOfMatchesPlayed + numberOfMatchesPlayedThisMonth <
+            initialMatchesLimit &&
+          matchesPlayedDuringMonth[i].time_class === "daily"
+        ) {
+          console.log(matchesPlayedDuringMonth[i]);
+          analyzedMatches.push(analyzeMatch(matchesPlayedDuringMonth[i]));
+          numberOfMatchesPlayedThisMonth += 1;
+        } else if (
+          numberOfMatchesPlayed + numberOfMatchesPlayedThisMonth <
+            initialMatchesLimit &&
+          matchesPlayedDuringMonth[i].time_class !== "daily"
+        ) {
+          console.log('continue if')
+          continue;
+        } else if(numberOfMatchesPlayed + numberOfMatchesPlayedThisMonth>=initialMatchesLimit){
+          console.log('setting index of current match')
+          setIndexOfCurrentMatch(i)
+          break;
+        }
+      }
+      return {
+        analyzedMatches: analyzedMatches,
+        numberOfMatchesPlayedThisMonth: numberOfMatchesPlayedThisMonth,
+      };
+    };
+
+    const initializeTimelineMatches = async () => {
+      let matchesPlayedDuringMonths = [];
+      let numberOfMatchesPlayed = 0;
+      for (let i = 0; i < userArchivedMatchesLinks.length; i++) {
+        //Get the analyzed matches and number of matches played for the current month
+        if (numberOfMatchesPlayed < initialMatchesLimit) {
+          const currentMonthData = await getMatchHistoryInMonth(
+            userArchivedMatchesLinks[i],
+            numberOfMatchesPlayed
+          );
+          matchesPlayedDuringMonths = matchesPlayedDuringMonths.concat(
+            currentMonthData.analyzedMatches
+          );
+          numberOfMatchesPlayed +=
+            currentMonthData.numberOfMatchesPlayedThisMonth;
+        }else if(numberOfMatchesPlayed >= initialMatchesLimit){
+          console.log('setting index of current archive')
+          setIndexOfCurrentArchive(i)
+          break;
+        }
+      }
+      //Updating the state to include the initial data
+      updateNumberOfMatches(allMatchData + numberOfMatches);
+      updateMatchData({
+        isLoading: false,
+        matches: matchesPlayedDuringMonths,
+      });
+    };
+    //Display the first 50 matches played by the user.
+    initializeTimelineMatches();
+  }, [userArchivedMatchesLinks, usernameInfo.userData.username]);
+
+  console.log(allMatchData);
+
+  return allMatchData.matches.length === 0 ? (
+    <div>User has not played any matches</div>
+  ) : (
+    <div className="timeline"></div>
+  );
+};
+
+export default Timeline;
