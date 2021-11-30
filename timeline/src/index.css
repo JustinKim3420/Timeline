@@ -40,12 +40,12 @@ body.dark-theme {
 .error-page {
   display: flex;
   flex-direction: column;
-  padding:2rem 2rem;
+  padding: 2rem 2rem;
   flex: 1 1 auto;
   background-color: var(--main-light);
 }
-#error-message{
-  font-size:2rem;
+#error-message {
+  font-size: 2rem;
 }
 .lds-roller {
   display: inline-block;
@@ -132,15 +132,17 @@ body.dark-theme {
   }
 }
 
+#user-player-id,
+#user-blitz-rating,
+#user-username,
+#user-name {
+  margin: 0;
+}
+#user-blitz-rating{
+  font-size: 2rem;
+}
 #user-name {
   font-size: 3rem;
-  margin: 0;
-}
-#user-username {
-  margin: 0;
-}
-#user-player-id {
-  margin: 0;
 }
 
 .results-page {
@@ -222,6 +224,60 @@ body.dark-theme {
   display: inline-block;
   vertical-align: baseline;
   list-style: none;
+  color:var(--main-dark)
+}
+.timeline-icon{
+  position: relative;
+  border-radius: 50%;
+  border: 0.25rem solid white;
+  padding:0.5rem;
+  font-size: 2rem;
+  z-index: 2;
+  color: white;
+}
+.positive{
+  background-color: rgb(68, 196, 68);
+}
+.negative{
+  background-color:salmon;
+}
+.draw{
+  background-color:lightgray;
+}
+
+.timeline{
+  position: relative;
+  margin-top:3rem;
+  display: flex;
+  justify-content:center;
+}
+
+.timeline-container{
+  display: flex;
+  height:10rem;
+  justify-content: center;
+}
+
+.timeline-vertical-line{
+  position:absolute;
+  top:-1.5rem;
+  margin-right:auto;
+  margin-left:auto;
+  left:0;
+  right:0;
+  height:10rem;
+  width:0.25rem;
+  border-radius: 1rem;
+  background-color: gray;
+}
+
+.timeline-image{
+  position: relative;
+  padding-top:0.5rem;
+}
+
+.timeline-container{
+  position: relative;
 }
 
 .no-text-decoration {
@@ -230,6 +286,14 @@ body.dark-theme {
 
 .inline-block {
   display: inline-block;
+}
+
+.header {
+  display: flex;
+}
+
+.user-info {
+  margin-left: 1rem;
 }
 
 .search-page {

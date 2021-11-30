@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Loading from './Loading'
+import TimelineEntry from './TimelineEntry'
 
 const RESULT_CODES = {
   win: "win",
@@ -41,7 +43,6 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
         matchData = {
           ratingAtStart: match.black.rating,
           result: RESULT_CODES[match.black.result] || 'loss',
-          startTime: match.start_time,
           endTime: match.end_time,
           against: match.white.username,
         };
@@ -50,7 +51,6 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
           ratingAtStart: match.white.rating,
           result: RESULT_CODES[match.white.result] || 'loss',
           endTime: match.end_time,
-          startTime: match.start_time,
           against: match.black.username,
         };
       }
@@ -78,20 +78,17 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
         if (
           numberOfMatchesPlayed + numberOfMatchesPlayedThisMonth <
             initialMatchesLimit &&
-          matchesPlayedDuringMonth[i].time_class === "daily"
+          matchesPlayedDuringMonth[i].time_class === "blitz"
         ) {
-          console.log(matchesPlayedDuringMonth[i]);
           analyzedMatches.push(analyzeMatch(matchesPlayedDuringMonth[i]));
           numberOfMatchesPlayedThisMonth += 1;
         } else if (
           numberOfMatchesPlayed + numberOfMatchesPlayedThisMonth <
             initialMatchesLimit &&
-          matchesPlayedDuringMonth[i].time_class !== "daily"
+          matchesPlayedDuringMonth[i].time_class !== "blitz"
         ) {
-          console.log('continue if')
           continue;
         } else if(numberOfMatchesPlayed + numberOfMatchesPlayedThisMonth>=initialMatchesLimit){
-          console.log('setting index of current match')
           setIndexOfCurrentMatch(i)
           break;
         }
@@ -102,7 +99,7 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
       };
     };
 
-    const initializeTimelineMatches = async () => {
+    const initializeTimelineMatchesAscending = async () => {
       let matchesPlayedDuringMonths = [];
       let numberOfMatchesPlayed = 0;
       for (let i = 0; i < userArchivedMatchesLinks.length; i++) {
@@ -118,7 +115,6 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
           numberOfMatchesPlayed +=
             currentMonthData.numberOfMatchesPlayedThisMonth;
         }else if(numberOfMatchesPlayed >= initialMatchesLimit){
-          console.log('setting index of current archive')
           setIndexOfCurrentArchive(i)
           break;
         }
@@ -131,16 +127,20 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
       });
     };
     //Display the first 50 matches played by the user.
-    initializeTimelineMatches();
+    initializeTimelineMatchesAscending();
   }, [userArchivedMatchesLinks, usernameInfo.userData.username]);
 
   console.log(allMatchData);
 
-  return allMatchData.matches.length === 0 ? (
-    <div>User has not played any matches</div>
-  ) : (
-    <div className="timeline"></div>
-  );
+  return allMatchData.isLoading
+    ? <div className = "timeline"><Loading /></div>
+    : allMatchData.matches.length===0 
+      ? <div>
+        User has not played any matches
+      </div>
+      : <div className = "timeline">
+        <TimelineEntry />
+      </div>
 };
 
 export default Timeline;
