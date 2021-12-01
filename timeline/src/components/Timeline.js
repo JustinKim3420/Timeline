@@ -139,7 +139,8 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
         User has not played any matches
       </div>
       : <div className = "timeline">
-        <TimelineEntry />
+        <TimelineEntry isOdd={true}/>
+        <TimelineEntry isOdd={false}/>
       </div>
 };
 

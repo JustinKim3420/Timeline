@@ -230,10 +230,12 @@ body.dark-theme {
   position: relative;
   border-radius: 50%;
   border: 0.25rem solid white;
+  margin-top:-3rem;
   padding:0.5rem;
   font-size: 2rem;
   z-index: 2;
   color: white;
+  box-shadow: inset 0 0 0.15rem  black;
 }
 .positive{
   background-color: rgb(68, 196, 68);
@@ -249,18 +251,33 @@ body.dark-theme {
   position: relative;
   margin-top:3rem;
   display: flex;
-  justify-content:center;
+  flex-direction: column;
+  align-items: center;
 }
 
-.timeline-container{
+.timeline-content{
+  width:45%;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 2rem;
+  padding:1rem;
+  flex-grow: 0;
+}
+
+.timeline-container-odd{
+}
+.timeline-container-even{
+  flex-direction: row-reverse;
+}
+.timeline-container-odd,
+.timeline-container-even{
   display: flex;
   height:10rem;
-  justify-content: center;
+  width:50%;
 }
 
 .timeline-vertical-line{
   position:absolute;
-  top:-1.5rem;
   margin-right:auto;
   margin-left:auto;
   left:0;
@@ -273,7 +290,11 @@ body.dark-theme {
 
 .timeline-image{
   position: relative;
-  padding-top:0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5%;
+  box-sizing: border-box;
 }
 
 .timeline-container{
@@ -343,7 +364,7 @@ body.dark-theme {
 }
 
 .full-page {
-  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
