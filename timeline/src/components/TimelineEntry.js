@@ -12,10 +12,14 @@ const TimelineEntry = ({ isOdd }) => {
     <div
       className={isOdd ? "timeline-container-odd" : "timeline-container-even"}
     >
-      <div className="timeline-content">
-        <h2>{matchData.result.toUpperCase()}</h2>
-        <div>vs. {matchData.against}</div>
+      <div className="content-bubble">
+        <div className="timeline-content">
+          <h2>{matchData.result.toUpperCase()}</h2>
+          <div>vs. {matchData.against}</div>
+        </div>
+        <div className="carrot"> </div>
       </div>
+
       <div className="timeline-image">
         <div className="timeline-vertical-line"></div>
         <i className="fas fa-plus timeline-icon positive"></i>

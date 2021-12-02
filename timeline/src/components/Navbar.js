@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div>
       <div className="navbar">
         <Link to="/" className="no-text-decoration inline-block home-icon-link">
           <i className="fas fa-chart-line navbar-icon"></i>
@@ -43,7 +42,6 @@ const Navbar = () => {
             </Link>
         }
       </div>
-    </div>
   );
 };
 
