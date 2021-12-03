@@ -44,14 +44,20 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
           ratingAtStart: match.black.rating,
           result: RESULT_CODES[match.black.result] || 'loss',
           endTime: match.end_time,
-          against: match.white.username,
+          against: {
+            username:match.white.username,
+            against:match.white.rating
+          },
         };
       } else {
         matchData = {
           ratingAtStart: match.white.rating,
           result: RESULT_CODES[match.white.result] || 'loss',
           endTime: match.end_time,
-          against: match.black.username,
+          against: {
+            username:match.black.username,
+            against:match.black.rating
+          }
         };
       }
       return matchData;
@@ -133,7 +139,7 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
   console.log(allMatchData);
 
   return allMatchData.isLoading
-    ? <div className = "timeline"><Loading /></div>
+    ? <div className = "loading-page"><Loading /></div>
     : allMatchData.matches.length===0 
       ? <div>
         User has not played any matches

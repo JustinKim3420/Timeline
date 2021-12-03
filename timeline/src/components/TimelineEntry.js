@@ -14,12 +14,13 @@ const TimelineEntry = ({ isOdd }) => {
     >
       <div className="content-bubble">
         <div className="timeline-content">
-          <h2>{matchData.result.toUpperCase()}</h2>
-          <div>vs. {matchData.against}</div>
+          <h2 id="match-result">{matchData.result.toUpperCase()} <span id="rating">({matchData.ratingAtStart})</span></h2>
+          <div id="against">vs. {matchData.against}</div>
+          
+          <div id="end-time">{matchData.endTime}</div>
         </div>
         <div className="carrot"> </div>
       </div>
-
       <div className="timeline-image">
         <div className="timeline-vertical-line"></div>
         <i className="fas fa-plus timeline-icon positive"></i>
