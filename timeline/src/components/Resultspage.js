@@ -18,6 +18,9 @@ const initialState = {
   },
 };
 
+const defaultProfileImageLink =
+  "https://betacssjs.chesscomfiles.com/bundles/web/images/noavatar_l.84a92436.gif";
+
 const Resultspage = () => {
   const { searchedUsername } = useParams();
   const [usernameInfo, setUsernameInfo] = useState({ ...initialState });
@@ -26,7 +29,6 @@ const Resultspage = () => {
     archivedMatches: [],
   });
   const [profileImage, setProfileImage] = useState();
-  console.log(userArchivedMatchesLinks);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -38,9 +40,11 @@ const Resultspage = () => {
         let userRating = await axios.get(
           `https://api.chess.com/pub/player/${searchedUsername}/stats`
         );
-        console.log(userRating.data);
-        console.log(usernameResults.data);
-        setProfileImage(usernameResults.data.avatar);
+        if (!usernameResults.data.avatar) {
+          setProfileImage(defaultProfileImageLink);
+        } else {
+          setProfileImage(usernameResults.data.avatar);
+        }
         usernameResults = {
           isLoading: false,
           status: usernameResults.status,
@@ -53,11 +57,12 @@ const Resultspage = () => {
           },
         };
       } catch (error) {
-        console.log(error.response.status);
+        const errorStatus = error.response? error.response.status : null;
+
         usernameResults = {
           ...initialState,
           isLoading: false,
-          status: error.response.status || null,
+          status: errorStatus,
         };
       }
       setUsernameInfo(usernameResults);
@@ -94,9 +99,11 @@ const Resultspage = () => {
     <div className="results-page">
       <div className="header">
         <img src={profileImage} width="150" height="150" alt="Profile image" />
-        <div className='user-info'>
+        <div className="user-info">
           <h1 id="user-name">{usernameInfo.userData.name}</h1>
-          <h2 id="user-blitz-rating">Current blitz rating: {usernameInfo.userData.blitzRating}</h2>
+          <h2 id="user-blitz-rating">
+            Current blitz rating: {usernameInfo.userData.blitzRating}
+          </h2>
           <h3 id="user-username">Username: {usernameInfo.userData.username}</h3>
           <h3 id="user-player-id">
             Player ID: {usernameInfo.userData.player_id}

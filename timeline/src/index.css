@@ -8,7 +8,6 @@
 html,
 body,
 #root {
-  height: 100%;
   width: 100%;
   min-width: 30rem;
   margin: 0;
@@ -257,6 +256,7 @@ body.dark-theme {
 }
 #against {
   font-size: 1.5rem;
+  margin-top:1rem;
   font-weight: 600;
 }
 #rating{
@@ -264,7 +264,8 @@ body.dark-theme {
 }
 #end-time {
   position: absolute;
-  bottom: 2rem;
+  font-size: 1.5rem;
+  bottom: 1.5rem;
 }
 .timeline {
   position: relative;
@@ -321,7 +322,7 @@ body.dark-theme {
   display: flex;
   position: relative;
   height: 14rem;
-  width: 60%;
+  width: 70%;
 }
 
 .timeline-vertical-line {
@@ -355,13 +356,13 @@ body.dark-theme {
   }
   .timeline-container-odd > .content-bubble {
     flex:1 1 auto;
-    margin-left: 5rem;
+    margin-left: 5.5rem;
     flex-direction: row-reverse;
     min-width: 10rem;
   }
   .timeline-container-even > .content-bubble {
     flex:1 1 auto;
-    margin-left: 5rem;
+    margin-left: 5.5rem;
     min-width: 10rem;
   }
 }
