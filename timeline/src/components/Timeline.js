@@ -101,6 +101,9 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
           setIndexOfCurrentMatch(j);
           break;
         }
+        if(currentArchive.data.games[j].time_class!=='blitz'){
+          continue;
+        }
         additionalMatches.push(analyzeMatch(currentArchive.data.games[j]));
         matchesTracked += 1;
       }
