@@ -33,14 +33,32 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
   const [indexOfCurrentMatch, setIndexOfCurrentMatch] = useState();
   const [indexOfCurrentArchive, setIndexOfCurrentArchive] = useState();
 
-  const analyzeMatch = useCallback((match) => {
+  const analyzeMatch = useCallback((match, previousMatch) => {
     let matchData;
     let isUserBlack =
       match.black.username.toLowerCase() ===
       usernameInfo.userData.username.toLowerCase();
-      
+
+    let calculateChange = () => {
+      if (!previousMatch) {
+        return;
+      }
+
+      let totalChange;
+
+      if (isUserBlack) {
+        totalChange = match.black.rating - previousMatch.ratingAtStart;
+      } else {
+        totalChange = match.white.rating - previousMatch.ratingAtStart;
+      }
+      return totalChange >= 0 ? `+${totalChange}` : `${totalChange}`;
+    };
+
     matchData = {
       ratingAtStart: isUserBlack ? match.black.rating : match.white.rating,
+      changeInRating: previousMatch
+        ? calculateChange()
+        : `+${isUserBlack ? match.black.rating : match.white.rating}`,
       result: isUserBlack
         ? RESULT_CODES[match.black.result] || "loss"
         : RESULT_CODES[match.white.result] || "loss",
@@ -58,6 +76,7 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
     let additionalMatches = [];
     let matchesTracked = 0;
     let currentArchive;
+    let previousMatch;
     //Go through each archived month from where it was left off
     for (
       let i = indexOfCurrentArchive;
@@ -101,10 +120,17 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
           setIndexOfCurrentMatch(j);
           break;
         }
-        if(currentArchive.data.games[j].time_class!=='blitz'){
+        if (currentArchive.data.games[j].time_class !== "blitz") {
           continue;
         }
-        additionalMatches.push(analyzeMatch(currentArchive.data.games[j]));
+        if (additionalMatches.length > 0) {
+          previousMatch = additionalMatches[additionalMatches.length - 1];
+        } else if (allMatchData.matches.length > 0) {
+          previousMatch = allMatchData.matches[allMatchData.matches.length - 1];
+        }
+        additionalMatches.push(
+          analyzeMatch(currentArchive.data.games[j], previousMatch)
+        );
         matchesTracked += 1;
       }
       //If we have enough matches for the update, break out of for loop and update state
@@ -123,7 +149,7 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
 
   useEffect(() => {
     if (isFetchingData) {
-      console.log(allMatchData)
+      console.log(allMatchData);
       console.log("fetching data");
       addAdditionalEntries();
     }
@@ -143,11 +169,13 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
 
     const getMatchHistoryInMonth = async (
       archiveForMonth,
-      numberOfMatchesPlayed
+      numberOfMatchesPlayed,
+      matchesPlayedDuringMonths
     ) => {
       let matchesPlayedDuringMonth = [];
       let analyzedMatches = [];
       let numberOfMatchesPlayedThisMonth = 0;
+      let previousMatch;
       try {
         matchesPlayedDuringMonth = (await axios.get(archiveForMonth)).data
           .games;
@@ -158,14 +186,23 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
           numberOfMatchesPlayedThisMonth: 0,
         };
       }
-
+      console.log(analyzedMatches);
       for (let i = 0; i < matchesPlayedDuringMonth.length; i++) {
+        console.log(analyzedMatches, i);
+        if (analyzedMatches.length > 0) {
+          previousMatch = analyzedMatches[analyzedMatches.length - 1];
+        } else if (matchesPlayedDuringMonths.length > 0) {
+          previousMatch = matchesPlayedDuringMonths[matchesPlayedDuringMonths.length - 1];
+        }
         if (
           numberOfMatchesPlayed + numberOfMatchesPlayedThisMonth <
             initialMatchesLimit &&
           matchesPlayedDuringMonth[i].time_class === "blitz"
         ) {
-          analyzedMatches.push(analyzeMatch(matchesPlayedDuringMonth[i]));
+          console.log(matchesPlayedDuringMonth[i]);
+          analyzedMatches.push(
+            analyzeMatch(matchesPlayedDuringMonth[i], previousMatch)
+          );
           numberOfMatchesPlayedThisMonth += 1;
         } else if (
           numberOfMatchesPlayed + numberOfMatchesPlayedThisMonth <
@@ -197,7 +234,8 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
         if (numberOfMatchesPlayed < initialMatchesLimit) {
           const currentMonthData = await getMatchHistoryInMonth(
             userArchivedMatchesLinks[i],
-            numberOfMatchesPlayed
+            numberOfMatchesPlayed,
+            matchesPlayedDuringMonths
           );
           matchesPlayedDuringMonths = matchesPlayedDuringMonths.concat(
             currentMonthData.analyzedMatches
@@ -218,7 +256,7 @@ const Timeline = ({ userArchivedMatchesLinks, usernameInfo }) => {
     };
     //Display the first 50 matches played by the user.
     initializeTimelineMatchesAscending();
-  }, [userArchivedMatchesLinks, usernameInfo.userData.username]);
+  }, []);
 
   return allMatchData.isLoading ? (
     <div className="loading-page">

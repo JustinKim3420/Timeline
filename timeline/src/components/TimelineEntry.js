@@ -1,15 +1,15 @@
 import React from "react";
 
-const TimelineEntry = ({matchData, isOdd }) => {
+const TimelineEntry = ({ matchData, isOdd }) => {
   const dateOptions = {
-    day:'2-digit',
-    year:'numeric',
-    month:'long',
-    hour:'2-digit',
-    minute:'2-digit',
-    second:'2-digit'
-  }
-  const matchDate = new Date((matchData.endTime*1000))
+    day: "2-digit",
+    year: "numeric",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  };
+  const matchDate = new Date(matchData.endTime * 1000);
   const icon =
     matchData.result === "win" ? (
       <i className="fas fa-plus timeline-icon positive"></i>
@@ -25,10 +25,18 @@ const TimelineEntry = ({matchData, isOdd }) => {
     >
       <div className="content-bubble">
         <div className="timeline-content">
-          <h2 id="match-result">{matchData.result.toUpperCase()} <span id="rating">({matchData.ratingAtStart})</span></h2>
-          <div id="against">vs. {matchData.against.username} ({matchData.against.rating})</div>
-          
-          <div id="end-time">{matchDate.toLocaleDateString('en-US',dateOptions)}</div>
+          <h2 id="match-result">
+            {matchData.result.toUpperCase()}{" "}
+            <span>({matchData.ratingAtStart})</span>
+            <span id="rating">{matchData.changeInRating}</span>
+          </h2>
+          <div id="against">
+            vs. {matchData.against.username} ({matchData.against.rating})
+          </div>
+
+          <div id="end-time">
+            {matchDate.toLocaleDateString("en-US", dateOptions)}
+          </div>
         </div>
         <div className="carrot"> </div>
       </div>
